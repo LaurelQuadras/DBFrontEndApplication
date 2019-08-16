@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>View Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+
+        <form action="/viewing" method="get">
+
+            <div class="form-group">
+             <b><center><h2>Enter the ID of User</h2></center></b>
+                <hr class="my-4">
+
+             <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-id">Number: </span>
+                 </div>
+                    <input type="text" class="form-control" placeholder="Enter ID of User" aria-label="ID" name="id" aria-describedby="basic-id">
+             </div>
+
+                <hr class="my-4">
+                <input type="submit" class="btn btn-success btn btn-primary btn-lg" value="Submit" />
+            </div>
+        </form>
+
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">
+                        <h5>Name</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text" th:text="${name}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">
+                        <h5>Password</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text"  th:text="${password}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">
+                        <h5>Location</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text" th:text="${location}"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-3">
+                <div class="card bg-light mb-3">
+                    <div class="card-header">
+                        <h5>Age</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text" th:text="${age}"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <p></p>
+        <div class="alert alert-warning">
+            <p th:text="${errormessage}"></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
