@@ -12,32 +12,10 @@ import java.util.Optional;
 
 @Controller
 public class StudentBasicInfoFrontEndController {
-
     @Autowired
     private PopulateStudentBasicInfo populateStudentBasicInfo;
-
     @Autowired
     private StudentBasicInfoRepository studentBasicInfoRepository;
-
-    @RequestMapping("/insertToDB")
-    public String insertTODB( ) {
-        return "insertToDB";
-    }
-
-    @RequestMapping("/deleteFromDB")
-    public String deleteFromDB() {
-        return "deleteDB";
-    }
-
-    @RequestMapping("/updateToDB")
-    public String updateToDB() {
-        return "updateToDB";
-    }
-
-    @RequestMapping(value = "/script" , method = RequestMethod.GET)
-    public String runScript() {
-        return "scriptRun";
-    }
 
     @RequestMapping(value = "/inserting", method = RequestMethod.GET)
     public String inserting(@RequestParam String id, @RequestParam String name, @RequestParam String password,
@@ -67,7 +45,7 @@ public class StudentBasicInfoFrontEndController {
             return "insertToDB";
         }
 
-        StudentBasicInfo studentBasicInfo = new StudentBasicInfo(Integer.valueOf(id), name, password, location, Integer.valueOf(age));
+        StudentBasicInfo studentBasicInfo = new StudentBasicInfo(Integer.parseInt(id), name, password, location, Integer.parseInt(age));
         studentBasicInfoRepository.save(studentBasicInfo);
         modelMap.put("errormessage","User successfully inserted in DB");
         return "insertToDB";
@@ -127,7 +105,7 @@ public class StudentBasicInfoFrontEndController {
            return "updateToDB";
         }
 
-        StudentBasicInfo studentBasicInfo = new StudentBasicInfo(Integer.valueOf(id),name,password,location,Integer.valueOf(age));
+        StudentBasicInfo studentBasicInfo = new StudentBasicInfo(Integer.parseInt(id),name,password,location,Integer.parseInt(age));
         studentBasicInfoRepository.save(studentBasicInfo);
         modelMap.put("errormessage","User successafully updated in DB");
         return "updateToDB";
@@ -141,8 +119,31 @@ public class StudentBasicInfoFrontEndController {
             return "scriptRun";
         }
 
-        populateStudentBasicInfo.finalRun(Integer.valueOf(number));
+        populateStudentBasicInfo.finalRun(Integer.parseInt(number));
         modelMap.put("errormessage","Script ran successfully");
         return "scriptRun";
+    }
+
+    @RequestMapping(value = "/viewing")
+    public String viewing(ModelMap modelMap, @RequestParam String id) {
+
+        if (id.isEmpty()) {
+            modelMap.put("errormessage","ID cannot be empty");
+            return "viewPage";
+        }
+
+        Optional<StudentBasicInfo> studentBasicInfoOptional = studentBasicInfoRepository.findById(Integer.valueOf(id));
+        if (!studentBasicInfoOptional.isPresent()) {
+            modelMap.put("errormessage","User not present in DB");
+            return "viewPage";
+        }
+
+        StudentBasicInfo studentBasicInfo = studentBasicInfoOptional.get();
+        modelMap.put("name",studentBasicInfo.getName());
+        modelMap.put("password",studentBasicInfo.getPassword());
+        modelMap.put("location",studentBasicInfo.getLocation());
+        modelMap.put("age",studentBasicInfo.getAge());
+        modelMap.put("errormessage","User data presented");
+        return "viewPage";
     }
 }
