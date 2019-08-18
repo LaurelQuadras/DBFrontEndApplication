@@ -46,27 +46,4 @@ public class StudentBasicInfoMainController {
         return "scriptRun";
     }
 
-    @RequestMapping(value = "/viewing")
-    public String viewing(ModelMap modelMap, @RequestParam String id) {
-
-        if (id.isEmpty()) {
-            modelMap.put("errormessage","ID cannot be empty");
-            return "viewPage";
-        }
-
-        Optional<StudentBasicInfo> studentBasicInfoOptional = studentBasicInfoRepository.findById(Integer.valueOf(id));
-        if (!studentBasicInfoOptional.isPresent()) {
-            modelMap.put("errormessage","User not present in DB");
-            return "viewPage";
-        }
-
-        StudentBasicInfo studentBasicInfo = studentBasicInfoOptional.get();
-        modelMap.put("name",studentBasicInfo.getName());
-        modelMap.put("password",studentBasicInfo.getPassword());
-        modelMap.put("location",studentBasicInfo.getLocation());
-        modelMap.put("age",studentBasicInfo.getAge());
-        modelMap.put("errormessage","User data presented");
-        return "viewPage";
-    }
-
 }
