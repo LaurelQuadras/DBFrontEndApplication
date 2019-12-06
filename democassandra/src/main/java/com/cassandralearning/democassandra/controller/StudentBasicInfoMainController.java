@@ -46,4 +46,7 @@ public class StudentBasicInfoMainController {
         return "scriptRun";
     }
 
+    @RequestMapping(value = "/filterAge")
+    public String filterAge() { return "ageFilter"; }
+
 }
