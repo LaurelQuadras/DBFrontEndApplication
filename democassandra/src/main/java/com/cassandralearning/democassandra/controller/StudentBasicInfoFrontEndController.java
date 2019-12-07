@@ -193,7 +193,11 @@ public class StudentBasicInfoFrontEndController {
                     .collect(Collectors.toList());
         }
 
-        modelMap.put("errormessage", "The students are "+filteredNamesList);
+        String resultNames = filteredNamesList.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+
+        modelMap.put("errormessage", "The students are "+resultNames);
         return "ageFilter";
     }
 }
