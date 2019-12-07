@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Filter Values </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <div class="jumbotron">
+
+        <form action="/" method="get">
+            <div class="form-group">
+                <center>
+                    <input type="submit" class="btn btn-primary" value="Main Page" />
+                </center>
+            </div>
+        </form>
+
+        <form action="/ageFilter" method="get">
+
+            <div class="form-group">
+
+                <b><center><h2>Please Enter the required age value to filter</h2></center></b>
+                <hr class="my-4">
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-age">Age: </span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Enter Age" aria-label="Age" name="age" aria-describedby="basic-age">
+                </div>
+
+                <div class="input-group mb-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="basic-filter-symbol">Symbol: </span>
+                    </div>
+                    <input type="text" class="form-control" placeholder="Enter Symbol ('<' or '>')" aria-label="Symbol" name="symbol" aria-describedby="basic-filter-symbol">
+                </div>
+
+                <hr class="my-4">
+                <input type="submit" class="btn btn-success btn btn-primary btn-lg" value="Submit" />
+
+                <p></p>
+                <div class="alert alert-warning">
+                    <p th:text="${errormessage}"></p>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

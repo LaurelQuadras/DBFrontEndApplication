@@ -3,12 +3,17 @@ package com.cassandralearning.democassandra.controller;
 import com.cassandralearning.democassandra.model.StudentBasicInfo;
 import com.cassandralearning.democassandra.repository.StudentBasicInfoRepository;
 import com.cassandralearning.democassandra.script.PopulateStudentBasicInfo;
+import com.google.common.base.Strings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Controller
 public class StudentBasicInfoFrontEndController {
@@ -16,6 +21,11 @@ public class StudentBasicInfoFrontEndController {
     private PopulateStudentBasicInfo populateStudentBasicInfo;
     @Autowired
     private StudentBasicInfoRepository studentBasicInfoRepository;
+
+    private String GREATER_THAN = ">";
+    private String LESSER_THAN = "<";
+    private String EQUALS_TO = "=";
+    private List<String> SYMBOLS = Arrays.asList(GREATER_THAN, LESSER_THAN, EQUALS_TO);
 
     @RequestMapping(value = "/inserting", method = RequestMethod.GET)
     public String inserting(@RequestParam String id, @RequestParam String name, @RequestParam String password,
@@ -145,5 +155,49 @@ public class StudentBasicInfoFrontEndController {
         modelMap.put("age",studentBasicInfo.getAge());
         modelMap.put("errormessage","User data presented");
         return "viewPage";
+    }
+
+    @RequestMapping(value = "/ageFilter")
+    public String ageFilter(ModelMap modelMap, @RequestParam String age, @RequestParam String symbol) {
+        if (Strings.isNullOrEmpty(age)) {
+            modelMap.put("errormessage", "Age cannot be empty");
+            return "ageFilter";
+        }
+
+        if (Strings.isNullOrEmpty(symbol) || !SYMBOLS.contains(symbol)) {
+            modelMap.put("errormessage", "Symbol can only be '<' or '>' or '='.");
+            return "ageFilter";
+        }
+
+        List<StudentBasicInfo> listOfAllStudents = studentBasicInfoRepository.findAll();
+        List<String> filteredNamesList = new ArrayList<>();
+
+        if (symbol.equals(GREATER_THAN)) {
+            filteredNamesList = listOfAllStudents.stream()
+                    .filter(student -> student.getAge() > Integer.parseInt(age))
+                    .map(StudentBasicInfo::getName)
+                    .collect(Collectors.toList());
+        }
+
+        else if (symbol.equals(LESSER_THAN)) {
+            filteredNamesList = listOfAllStudents.stream()
+                    .filter(student -> student.getAge() < Integer.parseInt(age))
+                    .map(StudentBasicInfo::getName)
+                    .collect(Collectors.toList());
+        }
+
+        else {
+            filteredNamesList = listOfAllStudents.stream()
+                    .filter(student -> student.getAge() == Integer.parseInt(age))
+                    .map(StudentBasicInfo::getName)
+                    .collect(Collectors.toList());
+        }
+
+        String resultNames = filteredNamesList.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(", "));
+
+        modelMap.put("errormessage", "The students are "+resultNames);
+        return "ageFilter";
     }
 }
